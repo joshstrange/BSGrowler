@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+  <title>Pusher</title>
+  <script src="http://js.pusher.com/1.11/pusher.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+ 	macgap.window.resize({width: 0, height: 0});
+    macgap.app.hide();
+    // Enable pusher logging - don't include this in production
+    Pusher.log = function(message) {
+      if (window.console && window.console.log) window.console.log(message);
+    };
+
+    // Flash fallback logging - don't include this in production
+    WEB_SOCKET_DEBUG = true;
+
+    var pusher = new Pusher('[KEY]');
+    var channel = pusher.subscribe('deployments');
+    channel.bind('growl', function(data) {
+      macgap.growl.notify({title: data.title, content: data.content});
+    });
+  </script>
+
+  <!--script src="http://localhost:1337/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://localhost:1337');
+    socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+    });
+    socket.on('growl', function (data) {
+      macgap.growl.notify({title: data.title, content: data.content});
+    });
+  </script-->
+</head>
